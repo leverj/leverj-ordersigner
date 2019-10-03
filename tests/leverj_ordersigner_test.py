@@ -59,17 +59,11 @@ sell = {
 }
 
 
-def test_compute_signature_for_exchange_order():
-    command = 'compute_signature_for_exchange_order'
+def test_sign_order():
+    result = sign_order(buy['order'], instrument, buy['signer'])
+    assert_equal(result, buy['signature'])
+    assert_not_equal(result, sell['signature'])
 
-    arguments = {'order': buy['order'],
-                 'instrument': instrument, 'signer': buy['signer']}
-    result = run_js(command, arguments)
-    assert_equal(result['signature'], buy['signature'])
-    assert_not_equal(result['signature'], sell['signature'])
-
-    arguments = {'order': sell['order'],
-                 'instrument': instrument, 'signer': sell['signer']}
-    result = run_js(command, arguments)
-    assert_equal(result['signature'], sell['signature'])
-    assert_not_equal(result['signature'], buy['signature'])
+    result = sign_order(sell['order'], instrument, sell['signer'])
+    assert_equal(result, sell['signature'])
+    assert_not_equal(result, buy['signature'])

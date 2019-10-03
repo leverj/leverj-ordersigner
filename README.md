@@ -1,23 +1,19 @@
-# Leverj.io Spot Exchange Python Bridge for Signing Orders
+# Leverj Spot Exchange Python Module for Signing Orders
 
 ## Description
 
-A python bridge to javascript libraries for Leverj.io Spot Exchange
+A python module for signing [leverj](https://leverj.io) spot exchange orders
 
 ### Installation
-> ensure `node` and `yarn` are installed on target machine
 ```shell
 $ pip install leverj_ordersigner
 ```
 
 ### Usage
 ```python
-run_js(command, arguments_as_dictionary)
+from lever_ordersigner import sign_order
+sign_order(order, order_instrument, signer)
 ```
-
-######_commnads_
-- compute_signature_for_exchange_order
-
 
 
 ### Development
