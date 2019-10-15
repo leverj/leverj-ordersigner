@@ -6,7 +6,7 @@ A python module for signing [leverj](https://leverj.io) spot exchange orders
 
 ### Installation
 ```shell
-$ pip install leverj_ordersigner
+$ pip install leverj-ordersigner
 ```
 
 ### Usage
