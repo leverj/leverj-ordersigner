@@ -8,6 +8,7 @@ from web3.auto import w3
 def sign_order(order, order_instrument, signer):
     (abi_types, evm_parameters) = _get_evm_parameters(
         order, order_instrument, signer)
+    # solidity pack into bytes
     keccak_hash = _get_hash(abi_types, evm_parameters)
     signature = sign(keccak_hash, signer)
     return signature
@@ -17,30 +18,46 @@ def _get_evm_parameters(order, order_instrument, signer):
     abi_types = []
     evm_parameters = []
 
-    # addresses
-    addresses = []
-    addresses.append(to_checksum_address(order['accountId']))
-    addresses.extend([to_checksum_address(order_instrument['quote']['address']),
-                      to_checksum_address(order_instrument['base']['address'])])
+    # account
+    abi_types.append('address')
+    evm_parameters.append(to_checksum_address(order['accountId']))
 
-    # uints
-    p = _convert_to_uint(order['price'], order_instrument['base']['decimals'])
-    price_adjusted_for_quote_currency = _adjust_price_for_quote_currency(
-        p, order_instrument)
-    uints = [to_int(order['timestamp']),
-             to_int(_get_order_type_as_int(order['orderType'])),
-             to_int(_get_side_as_int(order['side'])),
-             _convert_to_uint(order['quantity'], order_instrument['quote']['decimals']), price_adjusted_for_quote_currency]
+    # originatorTimestamp
+    abi_types.append('uint64')
+    evm_parameters.append(to_int(order['timestamp']))
 
-    bytes32s = []
+    # orderType
+    abi_types.append('uint8')
+    evm_parameters.append(to_int(_get_order_type_as_int(order['orderType'])))
 
-    # return evm_parameters
-    evm_parameters.extend(addresses)
-    abi_types.extend(['address']*len(addresses))
-    evm_parameters.extend(uints)
-    abi_types.extend(['uint256']*len(uints))
-    evm_parameters.extend(bytes32s)
-    abi_types.extend(['bytes32']*len(bytes32s))
+    # side
+    abi_types.append('uint8')
+    evm_parameters.append(to_int(_get_side_as_int(order['side'])))
+
+    # quantity
+    abi_types.append('uint256')
+    quantity = _convert_to_unit_lowest_denomination(
+        order['quantity'], order_instrument['base']['decimals'])
+    evm_parameters.append(quantity)
+
+    # price
+    abi_types.append('uint256')
+    price = _convert_to_unit_lowest_denomination(
+        order['price'], order_instrument['quote']['decimals'])
+    price_adjusted_for_base_to_quote_ratio = _adjust_for_base_to_quote_ratio(
+        price, order_instrument['base']['decimals'], order_instrument['quote']['decimals'])
+    evm_parameters.append(price_adjusted_for_base_to_quote_ratio)
+
+    # base
+    abi_types.append('address')
+    evm_parameters.append(to_checksum_address(
+        order_instrument['base']['address']))
+
+    # quote
+    abi_types.append('address')
+    evm_parameters.append(to_checksum_address(
+        order_instrument['quote']['address']))
+
     return (abi_types, evm_parameters)
 
 
@@ -60,18 +77,15 @@ def _get_side_as_int(side):
     return side_dict[side]
 
 
-def _adjust_price_for_quote_currency(base_price, order_instrument):
-    quote_decimals = order_instrument['quote']['decimals']
-    print(f"quote_decimals: {quote_decimals}")
-    quote_divisor = pow(10, quote_decimals)
-    return int(base_price / quote_divisor)
+def _adjust_for_base_to_quote_ratio(price, base_decimals, quote_decimals):
+    adjustment_power_factor = base_decimals - quote_decimals
+    adjusted_price = int(price * pow(10, adjustment_power_factor))
+    return adjusted_price
 
 
-def _convert_to_uint(number, decimals):
-    divisor = pow(10, (18 - decimals))
-    lowest_denomination_value = to_wei(number, 'ether')
-    print(f'lowest_denomination_value: {lowest_denomination_value}')
-    return int(lowest_denomination_value / divisor)
+def _convert_to_unit_lowest_denomination(number, decimals):
+    multiplier = pow(10, decimals)
+    return int(number * multiplier)
 
 
 def _get_hash(abi_types, evm_parameters):

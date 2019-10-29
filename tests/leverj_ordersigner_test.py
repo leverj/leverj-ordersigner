@@ -2,60 +2,45 @@ from nose.tools import *
 from leverj_ordersigner import *
 
 instrument = {
-    'symbol': 'ETHLEV',
-    'name': 'ETH/LEV',
-    'status': 'active',
-    'ticksize': 1,
-    'ticksperpoint': 10,
-    'baseSignificantDigits': 1,
-    'quoteSignificantDigits': 4,
+    'symbol': 'LEVETH',
     'quote': {
-        'name': 'LEV',
-        'address': '0x58C3ed77f0086C8365B84cc909949C93B7aed793',
-        'symbol': 'LEV',
-        'decimals': 9
+        'address': '0x0000000000000000000000000000000000000000',
+        'decimals': 18
     },
     'base': {
-        'name': 'ETH',
-        'address': '0x0000000000000000000000000000000000000000',
-        'symbol': 'ETH',
+        'address': '0x167cdb1aC9979A6a694B368ED3D2bF9259Fa8282',
         'decimals': 9
-    },
-    'convertSymbol': 'ETH'
+    }
 }
 
 buy = {
     'order': {
-        'accountId': '0xf17f52151EbEF6C7334FAD080c5704D77216b732',
-        'originator': '0x627306090abaB3A6e1400e9345bC60c78a8BEf57',
+        'accountId': '0x167cdb1aC9979A6a694B368ED3D2bF9259Fa8282',
         'side': 'buy',
-        'quantity': 10,  # * 1e+9
-        'price': 20000,
+        'quantity': 12.3343,
+        'price': 23.44322,
         'orderType': 'LMT',
-        'clientOrderId': '104233821827127014240520797578938743699',
-        'postOnly': True,
-        'instrument': instrument['symbol'],
-        'timestamp': 1563385374451002
+        'instrument': 'LEVETH',
+        'timestamp': 12382173200872,
+        'expiryTime': 1238217320021122,
     },
-    'signer': '0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3',
-    'signature': '0x7e48c3a4e282d141cccf940366ed8ad4bdc1bfb52ad214da903dd33834d54e8a07f796a763aba3803e1245e6e9de06930acd89446623c1856477b61dc9547e2b1c'
+    'signer': '0xb98ea45b6515cbd6a5c39108612b2cd5ae184d5eb0d72b21389a1fe6db01fe0d',
+    'signature': '0x94d197d0ea127fc263ce7aefc25f2edc4911de80c5614d9bbd5654613032dabb0420aafadd6251727943b8460b8f543455b40bbdc29ffb1f7cf59fc8273d206b1c'
 }
 
 sell = {
     'order': {
-        'accountId': '0x821aEa9a577a9b44299B9c15c88cf3087F3b5544',
-        'originator': '0xC5fdf4076b8F3A5357c5E395ab970B5B54098Fef',
+        'accountId': '0x167cdb1aC9979A6a694B368ED3D2bF9259Fa8282',
         'side': 'sell',
-        'quantity': 15,  # * 1e+9
-        'price': 18001,
+        'quantity': 12.3343,
+        'price': 23.44322,
         'orderType': 'LMT',
-        'clientOrderId': '104217976194624161373002088788871543699',
-        'postOnly': True,
-        'instrument': instrument['symbol'],
-        'timestamp': 1563385374430001
+        'instrument': 'LEVETH',
+        'timestamp': 12382173200872,
+        'expiryTime': 1238217320021122
     },
-    'signer': '0x0dbbe8e4ae425a6d2687f1a7e3ba17bc98c673636790f1b8ad91193c05875ef1',
-    'signature': '0xec4480428757d3c0c911c9a77e6c7292771c38d19d6a904b19e396608f026c212fcddb9c7da797b43d5fbbfe289fc2ec9ad2eb247a8811a9adadd21dd16df9f91c'
+    'signer': '0xb98ea45b6515cbd6a5c39108612b2cd5ae184d5eb0d72b21389a1fe6db01fe0d',
+    'signature': '0xaddab6976e5f01fd63db57376da178ee6f7a972ca3480a545f668fea7291be2c2e13b2c6a54d0f00179fcee3503eb2615f545986534cb2f1891f0ce4243e6f251c'
 }
 
 
