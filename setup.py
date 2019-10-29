@@ -2,7 +2,7 @@ import json
 import sys
 from setuptools import setup, find_packages
 
-version = "0.2"
+version = "0.3"
 name = "leverj_ordersigner"
 
 setup(
