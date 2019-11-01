@@ -82,13 +82,9 @@ def _convert_to_unit_lowest_denomination(number, decimals):
 
 def _get_hash(abi_types, evm_parameters):
     # return keccak_hash
-    print(f"abi_types: {abi_types}")
-    print(f"evm_parameters: {evm_parameters}")
     return Web3.soliditySha3(abi_types, evm_parameters)
 
 
 def sign(hash, signer):
-    print(f"hash: {hash.hex()}")
     signed_message = w3.eth.account.signHash(hash, signer)
-    print(f"signed_message: {signed_message}")
     return signed_message.signature.hex()
