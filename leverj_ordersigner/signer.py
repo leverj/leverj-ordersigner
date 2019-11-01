@@ -42,9 +42,9 @@ def _get_evm_parameters(order, order_instrument, signer):
 
     # price
     abi_types.append('uint256')
-    price_adjusted_for_quote_to_base_ratio = _adjust_for_quote_to_base_ratio(
-        order['price'], order_instrument['base']['decimals'], order_instrument['quote']['decimals'])
-    evm_parameters.append(price_adjusted_for_quote_to_base_ratio)
+    price = _convert_to_unit_lowest_denomination(
+        order['price'], order_instrument['quote']['decimals'])
+    evm_parameters.append(price)
 
     # base
     abi_types.append('address')
@@ -73,12 +73,6 @@ def _get_side_as_int(side):
         'sell': 2
     }
     return side_dict[side]
-
-
-def _adjust_for_quote_to_base_ratio(price, base_decimals, quote_decimals):
-    adjustment_power_factor = quote_decimals - base_decimals
-    adjusted_price = int(price * pow(10, adjustment_power_factor))
-    return adjusted_price
 
 
 def _convert_to_unit_lowest_denomination(number, decimals):
