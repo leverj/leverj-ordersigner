@@ -76,8 +76,8 @@ def _get_side_as_int(side):
 
 
 def _convert_to_unit_lowest_denomination(number, decimals):
-    multiplier = pow(10, decimals)
-    return int(number * multiplier)
+    number_in_wei = w3.toWei(number, 'ether')
+    return int(number_in_wei / pow(10, 18 - decimals))
 
 
 def _get_hash(abi_types, evm_parameters):
