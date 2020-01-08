@@ -3,6 +3,7 @@ from eth_utils.conversions import to_int
 from eth_utils import to_wei
 from web3 import Web3
 from web3.auto import w3
+from decimal import *
 
 
 def sign_order(order, order_instrument, signer):
@@ -36,13 +37,13 @@ def _get_evm_parameters(order, order_instrument, signer):
 
     # quantity
     abi_types.append('uint256')
-    quantity = _convert_to_unit_lowest_denomination(
+    quantity = _convert_to_unit_lowest_denomination_using_decimal(
         order['quantity'], order_instrument['base']['decimals'])
     evm_parameters.append(quantity)
 
     # price
     abi_types.append('uint256')
-    price = _convert_to_unit_lowest_denomination(
+    price = _convert_to_unit_lowest_denomination_using_decimal(
         order['price'], order_instrument['quote']['decimals'])
     evm_parameters.append(price)
 
@@ -78,11 +79,20 @@ def _get_side_as_int(side):
 def convert_to_unit_lowest_denomination(number, decimals):
     return _convert_to_unit_lowest_denomination(number, decimals)
 
+def convert_to_unit_lowest_denomination_using_decimal(number, decimals):
+    return _convert_to_unit_lowest_denomination_using_decimal(number, decimals)
+
 
 def _convert_to_unit_lowest_denomination(number, decimals):
     number_in_wei = w3.toWei(number, 'ether')
     str_number = str(number_in_wei)
     final_value = str_number[:(len(str_number) - (18-decimals))]
+    return int(final_value)
+
+def _convert_to_unit_lowest_denomination_using_decimal(number, decimals):
+    number_in_wei = w3.toWei(number, 'ether')
+    str_number = str(number_in_wei)
+    final_value = Decimal(str_number) / Decimal(pow(Decimal(10), Decimal(18 - decimals)))
     return int(final_value)
 
 

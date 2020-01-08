@@ -3545,5 +3545,5 @@ data = [
 
 def test_number_conversion():
     for each in data:
-        result = convert_to_unit_lowest_denomination(each["number"], each["decimals"])
+        result = convert_to_unit_lowest_denomination_using_decimal(each["number"], each["decimals"])
         assert_equal(result, each["result"])
