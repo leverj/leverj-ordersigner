@@ -1,5 +1,6 @@
 from nose.tools import *
-from leverj_ordersigner import *
+
+from leverj_ordersigner import spot
 
 instrument = {
     'symbol': 'LEVETH',
@@ -45,10 +46,10 @@ sell = {
 
 
 def test_sign_order():
-    result = sign_order(buy['order'], instrument, buy['signer'])
+    result = spot.sign_order(buy['order'], instrument, buy['signer'])
     assert_equal(result, buy['signature'])
     assert_not_equal(result, sell['signature'])
 
-    result = sign_order(sell['order'], instrument, sell['signer'])
+    result = spot.sign_order(sell['order'], instrument, sell['signer'])
     assert_equal(result, sell['signature'])
     assert_not_equal(result, buy['signature'])
