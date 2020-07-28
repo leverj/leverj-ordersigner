@@ -2,14 +2,14 @@ import json
 import sys
 from setuptools import setup, find_packages
 
-version = "0.8"
+version = "0.9.0"
 name = "leverj_ordersigner"
 
 setup(
     name=name,
     version=version,
-    description='Python module for signing Leverj spot exchange orders',
-    long_description='Python module for signing Leverj spot exchange orders',
+    description='Python module for signing Leverj spot and derivatives exchange orders',
+    long_description='Python module for signing Leverj spot and derivatives exchange orders',
     author='leverj',
     url='https://leverj.io',
     license='MIT',

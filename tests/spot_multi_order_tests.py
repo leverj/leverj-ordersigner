@@ -1,5 +1,6 @@
 from nose.tools import *
-from leverj_ordersigner import *
+
+from leverj_ordersigner import spot
 
 instruments = {
     "FEEETH": {
@@ -1371,6 +1372,7 @@ orders = [{"orderType": "LMT", "side": "buy", "price": 147.51, "quantity": 0.135
 
 def test_sign_order():
     for order in orders:
-        result = sign_order(order, instruments[order["instrument"]], signer)
+        result = spot.sign_order(
+            order, instruments[order["instrument"]], signer)
         assert_equal(result, order['signature'])
         print("success")
