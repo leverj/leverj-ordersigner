@@ -95,13 +95,20 @@ def _convert_to_unit_lowest_denomination(number, decimals):
 
 def get_quantity_numerator_and_denominator(quantity):
     decimal_places = _numbers_after_decimal_point(quantity)
-    numerator = quantity * 1 * decimal_places
-    denominator = 1 * decimal_places
+    numerator = quantity * pow(10, decimal_places)
+    denominator = pow(10, decimal_places)
+    print(
+        f'quantity: {quantity}, decimal_places: {decimal_places}, numerator: {numerator}, denominator: {denominator}')
     return (int(numerator), int(denominator))
+
+
+def _strip_unnecessary_zeros(number_as_string):
+    return number_as_string.rstrip('0').rstrip('.') if '.' in number_as_string else number_as_string
 
 
 def _numbers_after_decimal_point(x):
     s = str(x)
+    s = s.rstrip('0').rstrip('.') if '.' in s else s
     if not '.' in s:
         return 0
     return len(s) - s.index('.') - 1
