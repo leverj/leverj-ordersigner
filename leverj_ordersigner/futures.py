@@ -95,10 +95,11 @@ def _convert_to_unit_lowest_denomination(number, decimals):
 
 def get_quantity_numerator_and_denominator(quantity):
     decimal_places = _numbers_after_decimal_point(quantity)
-    numerator = quantity * pow(10, decimal_places)
+    str_quantity = str(quantity)
+    numerator = _strip_unnecessary_zeros(str_quantity).replace('.', '')
     denominator = pow(10, decimal_places)
     print(
-        f'quantity: {quantity}, decimal_places: {decimal_places}, numerator: {numerator}, denominator: {denominator}')
+        f'quantity: {quantity}, decimal_places: {decimal_places}, numerator: {int(numerator)}, denominator: {int(denominator)}')
     return (int(numerator), int(denominator))
 
 
